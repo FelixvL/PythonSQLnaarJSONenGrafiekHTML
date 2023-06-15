@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        function haalDataOp(){
+            fetch("http://127.0.0.1:5000/felix")
+            .then(r=>r.json())
+            .then(d=>verwerkdata(d))
+        }
+        function verwerkdata(dedata){
+            var result1 = dedata.filter(el => el.adults === 1)
+            var result2 = dedata.filter(el => el.adults === 2)
+            var result3 = dedata.filter(el => el.adults === 3)
+            tekenTaartGrafiek(result1.length, result2.length, result3.length)
+        }
+        function tekenTaartGrafiek(een, twee, drie){
+            var data = [{
+            values: [een, twee, drie],
+            labels: ['1-Adult Reservation', '2-Adults Reservation', '3-Adults Reservation'],
+            type: 'pie'
+            }];
+
+            var layout = {
+            height: 400,
+            width: 500
+            };
+
+            Plotly.newPlot('myDiv', data, layout);
+        }
+        window.onload = haalDataOp;
+    </script>
+</head>
+<body>
+    <div id="myDiv"></div>
+</body>
+</html>
