@@ -1,16 +1,11 @@
 import mysql.connector
-import windowsgebruik
-import json
+from json import loads, dumps
 from flask import jsonify
-
+import pandas
 from decimal import Decimal
 
-#Does quasi the same things as json.loads from here: https://pypi.org/project/dynamodb-json/
-class JSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return float(obj)
-        return json.JSONEncoder.default(self, obj)
+
+
 
 def methode():
     year = 2016
@@ -18,9 +13,9 @@ def methode():
     day = 16
     dbverbinding = mysql.connector.connect(
         host='localhost',
-        port=windowsgebruik.krijgpoort(),
+        port=3306,
         user='root',
-        password=windowsgebruik.krijgwachtwoord(),
+        password='root',
         database='hotel_booking'
     )
     mijncursor = dbverbinding.cursor()
@@ -35,4 +30,11 @@ def methode():
     ]
     return data
 
-#print(methode())
+def methode2():
+    print("hoi")
+    df = pandas.read_csv("Pokemon.csv")
+    result = df.to_json(orient="records")
+    parsed = loads(result)
+    return dumps(parsed, indent=4)  
+    
+print(methode2())
